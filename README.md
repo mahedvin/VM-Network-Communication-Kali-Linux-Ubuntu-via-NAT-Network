@@ -51,7 +51,9 @@ This is different from a standard **NAT** adapter, which gives each VM its own i
 2. Click the **NAT Networks** tab
 3. Click **Create** to add a new NAT Network
 4. Make sure **Enable DHCP** is checked
-5. Note the network name (e.g., `NatNetwork`)
+5. Note the network name
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 8 37 29 PM" src="https://github.com/user-attachments/assets/e56507c2-470f-45ae-aa45-28785606e5c6" />
+
 
 ### Assigning Both VMs to the NAT Network
 
@@ -60,6 +62,8 @@ For **each VM**:
 2. Set **Attached to:** `NAT Network`
 3. Set **Name:** to the same NAT Network name on both VMs
 4. Click **OK** and start the VMs
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 8 37 51 PM" src="https://github.com/user-attachments/assets/b8ee1fdf-33e1-4ea1-838a-9bb05252551a" />
+
 
 ---
 
@@ -106,6 +110,8 @@ After setting up the NAT Network and booting both VMs, running `ifconfig` on the
 **Symptoms:**
 - `ifconfig` showed the interface but no IP address
 - No `inet` entry visible under the interface
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 8 52 19 PM" src="https://github.com/user-attachments/assets/354ae42b-6b72-413c-8a31-529c72dfcf85" />
+
 
 ---
 
@@ -121,6 +127,8 @@ Look for interfaces listed as `DOWN` or missing an IP.
 ```bash
 sudo cat /etc/netplan/*.yaml
 ```
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 9 18 24 PM" src="https://github.com/user-attachments/assets/bf731a44-8c22-47f1-b7ea-c2fb54f73558" />
+
 Confirmed `dhcp4: true` was set — so the config was correct.
 
 **Step 3 — Try to manually request an IP using `dhclient`:**
@@ -146,6 +154,8 @@ Since `dhclient` was not available, `dhcpcd` was used instead:
 ```bash
 sudo dhcpcd <interface-name>
 ```
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 9 19 56 PM" src="https://github.com/user-attachments/assets/df5a9cc2-75a8-4869-9df5-af31cfa7d561" />
+
 
 > Replace `<interface-name>` with your actual interface (e.g., `enp0s3`). Find it by running `ip link show`.
 
@@ -164,6 +174,7 @@ or
 ```bash
 ifconfig
 ```
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 9 20 31 PM" src="https://github.com/user-attachments/assets/e783815c-bfa0-48a0-b33f-2ed605f5aa63" />
 
 You should now see an `inet` entry with an IP address under your interface.
 
@@ -172,6 +183,7 @@ You should now see an `inet` entry with an IP address under your interface.
 ```bash
 ping <ip-address-of-other-vm>
 ```
+<img width="1512" height="982" alt="Screenshot 2026-05-12 at 9 17 25 PM" src="https://github.com/user-attachments/assets/f64dc111-f4cc-4133-9988-1c085b805b02" />
 
 ---
 
